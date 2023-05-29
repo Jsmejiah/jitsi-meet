@@ -47,6 +47,11 @@ interface IState {
      * Whether or not the smiley selector is visible.
      */
     showSmileysPanel: boolean;
+
+    /**
+     *  File object for the document to be sent.
+     */
+    file: File | null;
 }
 
 /**
@@ -56,10 +61,12 @@ interface IState {
  */
 class ChatInput extends Component<IProps, IState> {
     _textArea?: RefObject<HTMLTextAreaElement>;
+    fileInputRef: React.RefObject<HTMLInputElement>;
 
     state = {
         message: '',
-        showSmileysPanel: false
+        showSmileysPanel: false,
+        file: null
     };
 
     /**
@@ -79,6 +86,7 @@ class ChatInput extends Component<IProps, IState> {
         this._onSmileySelect = this._onSmileySelect.bind(this);
         this._onSubmitMessage = this._onSubmitMessage.bind(this);
         this._toggleSmileysPanel = this._toggleSmileysPanel.bind(this);
+        this.fileInputRef = React.createRef<HTMLInputElement>();
     }
 
     /**
@@ -132,6 +140,7 @@ class ChatInput extends Component<IProps, IState> {
                         icon = { IconSend }
                         onClick = { this._onSubmitMessage }
                         size = { isMobileBrowser() ? 'large' : 'medium' } />
+                    <input type="file" ref={this.fileInputRef} onChange={this.handleFileChange} />
                 </div>
             </div>
         );
@@ -147,24 +156,60 @@ class ChatInput extends Component<IProps, IState> {
         this._textArea?.current && this._textArea.current.focus();
     }
 
+    handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = event.target.files?.[0] || null;
+        this.setState({ file: selectedFile });
+      };
+
     /**
      * Submits the message to the chat window.
      *
      * @returns {void}
      */
     _onSubmitMessage() {
-        const trimmed = this.state.message.trim();
-
-        if (trimmed) {
-            this.props.onSend(trimmed);
-
-            this.setState({ message: '' });
-
-            // Keep the textarea in focus when sending messages via submit button.
-            this._focus();
+        const { message, file } = this.state;
+      
+        // Perform file upload logic here
+        if (file) {
+          const formData = new FormData();
+          formData.append('file', file);
+      
+          // Send the file to the server
+          //Falta añadir ruta correcta aqui
+          fetch('/api/upload', {
+            method: 'POST',
+            body: formData
+          })
+            .then(response => response.json())
+            .then(data => {
+              const fileRoute = data.path;
+      
+              // Update the message to be the route of the uploaded file
+              const updatedMessage = fileRoute;
+      
+              // Send the updated message to the chat window
+              this.props.onSend(updatedMessage);
+      
+              // Clear the input fields
+              this.setState({ message: '', file: null });
+      
+              // Keep the textarea in focus when sending messages via submit button
+              this._focus();
+            })
+            .catch(error => {
+              console.error('Error uploading file:', error);
+            });
+        } else {
+          // No file selected, send the message as it is
+          this.props.onSend(message);
+      
+          // Clear the input fields
+          this.setState({ message: '' });
+      
+          // Keep the textarea in focus when sending messages via submit button
+          this._focus();
         }
-
-    }
+      }
 
     /**
      * Detects if enter has been pressed. If so, submit the message in the chat
