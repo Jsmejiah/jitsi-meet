@@ -185,6 +185,7 @@ class ChatInput extends Component<IProps, IState> {
               const fileRoute = data.path;
       
               // Update the message to be the route of the uploaded file
+              //Añadir un codigo para diferenciar los archivos de los mensajes
               const updatedMessage = fileRoute;
       
               // Send the updated message to the chat window
