@@ -66,7 +66,7 @@ class ChatInput extends Component<IProps, IState> {
     state = {
         message: '',
         showSmileysPanel: false,
-        file: null
+        file: null as File | null
     };
 
     /**
