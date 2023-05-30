@@ -171,18 +171,18 @@ class ChatInput extends Component<IProps, IState> {
       
         // Perform file upload logic here
         if (file) {
-          const formData = new FormData();
-          formData.append('file', file);
+          //const formData = new FormData();
+          //formData.append('file', file);
       
           // Send the file to the server
           //Falta añadir ruta correcta aqui
-          fetch('/api/upload', {
-            method: 'POST',
-            body: formData
-          })
-            .then(response => response.json())
-            .then(data => {
-              const fileRoute = data.path;
+          //fetch('/api/upload', {
+          //  method: 'POST',
+          //  body: formData
+          //})
+          //  .then(response => response.json())
+          //  .then(data => {
+              const fileRoute = '/var/www/uploads/'+file.name;
       
               // Update the message to be the route of the uploaded file
               //Añadir un codigo para diferenciar los archivos de los mensajes
@@ -196,10 +196,10 @@ class ChatInput extends Component<IProps, IState> {
       
               // Keep the textarea in focus when sending messages via submit button
               this._focus();
-            })
-            .catch(error => {
-              console.error('Error uploading file:', error);
-            });
+            //})
+            //.catch(error => {
+            //  console.error('Error uploading file:', error);
+            //});
         } else {
           // No file selected, send the message as it is
           this.props.onSend(message);
