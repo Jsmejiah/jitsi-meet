@@ -176,18 +176,18 @@ class ChatInput extends Component<IProps, IState> {
       
           // Send the file to the server
           
-          fetch('http://192.168.0.21:8002/api/hello', {
-            method: 'GET'
-          })
-          console.log('enviando...')
-          fetch('http://192.168.0.21:8002/api/upload', {
-            method: 'POST',
-            body: formData
-          })
-            .then(response => response.json())
-            .then(data => {
+          //fetch('https://192.168.0.21:8002/api/hello', {
+          //  method: 'GET'
+          //})
+          //console.log('enviando...')
+          //fetch('https://192.168.0.21:8002/api/upload', {
+          //  method: 'POST',
+          //  body: formData
+          //})
+          //  .then(response => response.json())
+          //  .then(data => {
                 console.log('enviado...')
-              console.log(data);
+          //    console.log(data);
               const fileRoute = '/var/www/uploads/'+file.name;
       
               // Update the message to be the route of the uploaded file
@@ -202,10 +202,10 @@ class ChatInput extends Component<IProps, IState> {
       
               // Keep the textarea in focus when sending messages via submit button
               this._focus();
-            })
-            .catch(error => {
-              console.error('Error uploading file:', error);
-            });
+         //   })
+         //   .catch(error => {
+         //     console.error('Error uploading file:', error);
+         //   });
         } else {
           // No file selected, send the message as it is
           this.props.onSend(message);
