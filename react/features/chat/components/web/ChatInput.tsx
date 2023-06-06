@@ -176,7 +176,7 @@ class ChatInput extends Component<IProps, IState> {
       
           // Send the file to the server
           //Falta añadir ruta correcta aqui
-          fetch('jitsi.prueba.com/api/upload', {
+          fetch('jitsi.prueba.com:8000/api/upload', {
             method: 'POST',
             body: formData
           })
