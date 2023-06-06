@@ -176,12 +176,13 @@ class ChatInput extends Component<IProps, IState> {
       
           // Send the file to the server
           //Falta añadir ruta correcta aqui
-          fetch('apijitsi.prueba.com/api/upload', {
+          fetch('192.168.0.21:8002/api/upload', {
             method: 'POST',
             body: formData
           })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
               const fileRoute = '/var/www/uploads/'+file.name;
       
               // Update the message to be the route of the uploaded file
