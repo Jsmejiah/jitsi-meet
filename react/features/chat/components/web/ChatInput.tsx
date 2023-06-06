@@ -176,11 +176,11 @@ class ChatInput extends Component<IProps, IState> {
       
           // Send the file to the server
           
-          fetch('192.168.0.21:8002/api/hello', {
+          fetch('http://192.168.0.21:8002/api/hello', {
             method: 'GET'
           })
           console.log('enviando...')
-          fetch('192.168.0.21:8002/api/upload', {
+          fetch('http://192.168.0.21:8002/api/upload', {
             method: 'POST',
             body: formData
           })
